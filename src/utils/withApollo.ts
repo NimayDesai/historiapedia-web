@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { NextPageContext } from "next";
 import { createWithApollo } from "./createWithApollo";
 
-const client = (ctx: NextPageContext) =>
+const client = (ctx) =>
   new ApolloClient({
     uri: process.env.NEXT_PUBLIC_API_URL,
     credentials: "include",
