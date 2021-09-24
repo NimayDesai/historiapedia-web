@@ -1,14 +1,42 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "../theme";
+import { AppProps } from "next/app";
+import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
+import { CommentsQuery, PaginatedComments } from "../generated/graphql";
 
-import theme from '../theme'
-import { AppProps } from 'next/app'
+const client = new ApolloClient({
+  uri: process.env.NEXT_PUBLIC_API_URL,
+  credentials: "include",
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          comments: {
+            keyArgs: [""],
+            merge(
+              existing: PaginatedComments | undefined,
+              incoming: PaginatedComments
+            ): PaginatedComments {
+              return {
+                ...incoming,
+                comments: [...(existing?.comments || []), ...incoming.comments],
+              };
+            },
+          },
+        },
+      },
+    },
+  }),
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider resetCSS theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
-  )
+    <ApolloProvider client={client}>
+      <ChakraProvider resetCSS theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </ApolloProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
