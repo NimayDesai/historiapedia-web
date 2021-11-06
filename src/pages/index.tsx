@@ -1,4 +1,8 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
@@ -9,6 +13,7 @@ import {
   Divider,
   Flex,
   Heading,
+  IconButton,
   Link,
   Stack,
   Text,
@@ -16,19 +21,10 @@ import {
 import { Layout } from "../components/Layout";
 import { useCommentsQuery } from "../generated/graphql";
 import NextLink from "next/link";
+import { withApollo } from "../utils/withApollo";
+import { LikeSection } from "../components/LikeSection";
 
 const Index = () => {
-  const { data, loading, fetchMore, variables } = useCommentsQuery({
-    variables: {
-      limit: 10,
-      cursor: null as null | string,
-    },
-  });
-
-  if (!loading && !data) {
-    return <div>Could not get comments</div>;
-  }
-
   return (
     <Layout>
       <Flex mx="auto" align="center" w="100%" maxW={800} mt={100}>
@@ -44,16 +40,19 @@ const Index = () => {
           </Text>
           <br />
           <Box align="center" pb="50px">
-            <Button
-              as={Link}
-              size="lg"
-              colorScheme="green"
-              mr={8}
-              rightIcon={<ArrowForwardIcon />}
-            >
-              Get Started
-            </Button>
-            <Button as={Link} size="lg" colorScheme="gray">
+            <NextLink href="/register">
+              <Button
+                as={Link}
+                size="lg"
+                colorScheme="green"
+                mr={8}
+                rightIcon={<ArrowForwardIcon />}
+              >
+                Get Started
+              </Button>
+            </NextLink>
+
+            <Button as={Link} isExternal size="lg" colorScheme="gray">
               Source Code
             </Button>
           </Box>
@@ -71,61 +70,17 @@ const Index = () => {
             projects. HistoriaPedia has it all
           </Text>
           <br />
-          <Flex align="center">
-            <Heading>Comments</Heading>
-            <NextLink href="/create-comment">
-              <Link ml="auto">New Comment</Link>
-            </NextLink>
-          </Flex>
-          <br />
-          {!data && loading ? (
-            <Box>loading...</Box>
-          ) : (
-            <Stack spacing={8}>
-              {data!.comments.comments.map((p) => (
-                <Box
-                  key={p.id}
-                  p={5}
-                  shadow="md"
-                  borderWidth="1px"
-                  borderRadius="8px"
-                >
-                  <Heading fontSize="xl" textAlign="left">
-                    {p.title}
-                  </Heading>
-                  <Text textAlign="left" mt={4}>
-                    {p.textSnippet}
-                  </Text>
-                </Box>
-              ))}
-            </Stack>
-          )}
-          {data && data.comments.hasMore ? (
-            <Flex>
-              <Button
-                onClick={() => {
-                  fetchMore({
-                    variables: {
-                      limit: variables?.limit,
-                      cursor:
-                        data.comments.comments[
-                          data.comments.comments.length - 1
-                        ].createdAt,
-                    },
-                  });
-                }}
-                isLoading={loading}
-                m="auto"
-                my={8}
-              >
-                Load more
-              </Button>
-            </Flex>
-          ) : null}
+          <Heading fontSize="3xl" pt="50px">
+            Sort by grade
+          </Heading>
+
+          <Text fontSize="xl" color="gray">
+            HistoriaPedia can sort by grade in the Canadian Curriculum
+          </Text>
         </Stack>
       </Flex>
     </Layout>
   );
 };
 
-export default Index;
+export default withApollo({ ssr: true })(Index);

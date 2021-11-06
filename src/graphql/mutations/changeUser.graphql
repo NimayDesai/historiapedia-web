@@ -1,0 +1,15 @@
+mutation ChangeUser($options: UsernamePasswordInput!) {
+  changeUser(options: $options) {
+    errors {
+      field
+      message
+    }
+    user {
+      createdAt
+      updatedAt
+      username
+      id
+      email
+    }
+  }
+}

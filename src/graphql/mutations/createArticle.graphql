@@ -1,0 +1,11 @@
+mutation CreateArticle($input: ArticleInput!) {
+  createArticle(input: $input) {
+    id
+    createdAt
+    updatedAt
+    text
+    title
+    points
+    creatorId
+  }
+}

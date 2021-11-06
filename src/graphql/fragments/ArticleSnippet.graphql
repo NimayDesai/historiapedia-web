@@ -1,0 +1,16 @@
+fragment ArticleSnippet on Article {
+  id
+  createdAt
+  updatedAt
+  textSnippet
+  title
+  voteStatus
+  points
+  creator {
+    createdAt
+    updatedAt
+    username
+    email
+    id
+  }
+}

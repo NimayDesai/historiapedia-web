@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
-import { useCreateCommentMutation } from "../generated/graphql";
+import { useCreateArticleMutation } from "../generated/graphql";
 import { useIsAuth } from "../utils/useIsAuth";
 import { withApollo } from "../utils/withApollo";
 
 const CreateComment: React.FC<{}> = ({}) => {
   const router = useRouter();
-  const [createPost] = useCreateCommentMutation();
+  const [createArticle] = useCreateArticleMutation();
 
   useIsAuth();
 
@@ -18,7 +18,17 @@ const CreateComment: React.FC<{}> = ({}) => {
     <Layout variant="small">
       <Formik
         initialValues={{ title: "", text: "" }}
-        onSubmit={async (values, { setErrors }) => {}}
+        onSubmit={async (values, { setErrors }) => {
+          const { errors } = await createArticle({
+            variables: { input: values },
+            update: (cache) => {
+              cache.evict({ fieldName: "articles" });
+            },
+          });
+          if (!errors) {
+            router.push("/articles");
+          }
+        }}
       >
         {({ isSubmitting }) => (
           <Form>
@@ -37,7 +47,7 @@ const CreateComment: React.FC<{}> = ({}) => {
               colorScheme="green"
               isLoading={isSubmitting}
             >
-              New Comment
+              New Article
             </Button>
           </Form>
         )}

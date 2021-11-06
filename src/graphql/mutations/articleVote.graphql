@@ -1,0 +1,3 @@
+mutation ArticleVote($value: Int!, $articleId: Int!) {
+  articleVote(value: $value, articleId: $articleId)
+}

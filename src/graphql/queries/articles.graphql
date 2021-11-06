@@ -1,0 +1,8 @@
+query Articles($limit: Int!, $cursor: String) {
+  articles(limit: $limit, cursor: $cursor) {
+    hasMore
+    articles {
+      ...ArticleSnippet
+    }
+  }
+}

@@ -1,0 +1,20 @@
+query Article($id: Int!) {
+  article(id: $id) {
+    id
+    createdAt
+    updatedAt
+    title
+    points
+    text
+    voteStatus
+    creator {
+      createdAt
+      updatedAt
+      id
+      username
+    }
+    comments {
+      ...CommentSnippet
+    }
+  }
+}

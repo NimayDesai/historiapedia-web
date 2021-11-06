@@ -1,5 +1,5 @@
-mutation createComment($input: CommentInput!) {
-  createComment(input: $input) {
+mutation createComment($title: String!, $text: String!, $articleId: Int!) {
+  createComment(title: $title, text: $text, articleId: $articleId) {
     id
     createdAt
     updatedAt

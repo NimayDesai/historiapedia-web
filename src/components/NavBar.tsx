@@ -31,6 +31,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   } else {
     bar = (
       <Flex align="center">
+        <NextLink href="/dashboard">
+          <Link mr={4}>Dashboard</Link>
+        </NextLink>
         <Box mr={4}>{data.me.username}</Box>
         <Button
           onClick={async () => {
@@ -49,11 +52,18 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   return (
     <Flex zIndex={1} position="sticky" top={0} p={6}>
       <Box>
-        <NextLink href="/">
-          <Link>
-            <Heading>HistoriaPedia</Heading>
-          </Link>
-        </NextLink>
+        <Flex align="center">
+          <NextLink href="/">
+            <Link mr={4}>
+              <Heading>HistoriaPedia</Heading>
+            </Link>
+          </NextLink>
+          <NextLink href="/articles">
+            <Link mr={4}>
+              <Heading size="md">Articles</Heading>
+            </Link>
+          </NextLink>
+        </Flex>
       </Box>
       <Flex ml="auto" align="center">
         {bar}
